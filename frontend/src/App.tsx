@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-      <div className="h-screen">
+      <div className="h-screen bg-white dark:bg-blue-900">
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
