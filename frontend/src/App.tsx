@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-      <div className="h-screen bg-white dark:bg-blue-900">
+      <div className="h-screen bg-gray-100 dark:bg-gray-900">
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
