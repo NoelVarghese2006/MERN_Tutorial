@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 
 const CreatePage = () => {
   const [newProduct, setNewProduct] = useState({
+    _id: "",
     name: "",
     price: "",
     image: "",
@@ -28,7 +29,7 @@ const CreatePage = () => {
 
       })
     }
-    setNewProduct({name: "", price: "", image: ""});
+    setNewProduct({_id: "", name: "", price: "", image: ""});
   }
 
   return (

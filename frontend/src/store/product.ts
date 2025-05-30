@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 // 1. Define your Product type
 interface Product {
+  _id: string;
   name: string;
   price: string;
   image: string;
@@ -13,6 +14,7 @@ interface ProductStore {
   products: Product[];
   setProducts: (products: Product[]) => void;
   createProduct: (newProduct: Product) => Promise<{ success: boolean; message: string }>;
+  fetchProducts: () => Promise<void>;
 }
 
 // 3. Create the store with types
@@ -33,5 +35,19 @@ export const useProductStore = create<ProductStore>((set) => ({
     const data = await res.json();
     set((state) => ({products:[...state.products, data.data]}))
     return {success:true, message: "Product created succesfully"}
+  },
+  fetchProducts: async () => {
+    const res = await fetch("/api/products");
+    const data = await res.json();
+    set({ products: data.data});
+  },
+  deleteProduct: async (pid: string) => {
+    const res = await fetch(`/api/product/${pid}`, {
+      method: "DELETE",
+    });
+    const data = await res.json();
+    if(!data.success) return { success: false, message: data.message};
+    set(state => ({ products: state.products.filter(product => product._id !== pid)}));
+    return { success: true, message: data.message}; 
   }
 }));
