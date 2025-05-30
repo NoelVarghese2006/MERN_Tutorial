@@ -15,6 +15,7 @@ interface ProductStore {
   setProducts: (products: Product[]) => void;
   createProduct: (newProduct: Product) => Promise<{ success: boolean; message: string }>;
   fetchProducts: () => Promise<void>;
+  deleteProduct: (pid: string) => Promise<{ success: boolean; message: string }>;
 }
 
 // 3. Create the store with types
@@ -42,7 +43,7 @@ export const useProductStore = create<ProductStore>((set) => ({
     set({ products: data.data});
   },
   deleteProduct: async (pid: string) => {
-    const res = await fetch(`/api/product/${pid}`, {
+    const res = await fetch(`/api/products/${pid}`, {
       method: "DELETE",
     });
     const data = await res.json();
