@@ -16,6 +16,7 @@ interface ProductStore {
   createProduct: (newProduct: Product) => Promise<{ success: boolean; message: string }>;
   fetchProducts: () => Promise<void>;
   deleteProduct: (pid: string) => Promise<{ success: boolean; message: string }>;
+  updateProduct: (pid: string, updatedProduct: Product) => Promise<{ success: boolean; message: string }>;
 }
 
 // 3. Create the store with types
@@ -50,5 +51,20 @@ export const useProductStore = create<ProductStore>((set) => ({
     if(!data.success) return { success: false, message: data.message};
     set(state => ({ products: state.products.filter(product => product._id !== pid)}));
     return { success: true, message: data.message}; 
+  },
+  updateProduct: async (pid: string, updatedProduct: Product) => {
+    const res = await fetch(`/api/products/${pid}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedProduct)
+    });
+    const data = await res.json();
+    if(!data.success) return { success: false, message: data.message};
+    set(state => ({
+      products: state.products.map((product) => (product._id === pid ? data.data : product)),
+    }))
+    return { success: true, message: data.message};
   }
 }));
